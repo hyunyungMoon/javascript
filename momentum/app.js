@@ -1,17 +1,40 @@
-const title = document.getElementsByClassName("ch1");
+const loginForm = document.querySelector(".login-form");
+const loginFormInput = loginForm.querySelector("input");  
+const greeting = document.querySelector(".greeting-title");
 
-const span1 = document.querySelector(".ch1 span");
+const HIDDEN_CLASS = "hidden";
+const USERNAME_KEY = "username"
 
-function handleMouseEnter(){
-  span1.innerText = "enter";
+
+function greetingControl(username){
+  greeting.innerText += `Hello ${username}! Welcome!`;
+  greeting.classList.remove(HIDDEN_CLASS);
 }
 
-function handleMouseLeave(){
-  span1.innerText = "leave";
+
+function handleLoginFormInputSubmit(event){
+  event.preventDefault();  
+  loginForm.classList.add(HIDDEN_CLASS);
+  const username = loginFormInput.value;
+  localStorage.setItem(USERNAME_KEY, username);  
+  greetingControl(username);
 }
 
-span1.addEventListener("mouseenter", handleMouseEnter);
-span1.addEventListener("mouseleave", handleMouseLeave);
+
+const savedUserName = localStorage.getItem(USERNAME_KEY);
+
+if(savedUserName === null){
+  loginForm.classList.remove(HIDDEN_CLASS);  
+  loginForm.addEventListener("submit", handleLoginFormInputSubmit);
+}
+else{
+  greetingControl(savedUserName);
+}
+
+
+
+
+
 
 
 
