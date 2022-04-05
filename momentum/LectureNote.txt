@@ -10,6 +10,17 @@ javascript는 data type이 존재. (integer, string, boolean, array, null(자연
                             undefined(null과는 다름. 초기화 없이 선언한 변수를 사용할때, array에서 index범위 벗어난 값을 가져올때, 반환하지 않는 함수의 반환값을 쓰려고 할 때 등) 등등)
 
 data type 확인은 typeof 변수명 또는 typeof(변수명) 으로 가능 / datatype간의 변화도 가능. 
+문자열로의 변환은 String(다른type객체) 하면 string으로 변환가능하면 string으로 반환. 정확히는 String생성자를 이용한 것.
+JSON.stringify() 하면 String으로 변환되는데 object건 javascript코드건 뭐든지 스트링으로 통째로 바꿔줌
+예를들어 A = ["a", "b"] 라고 한다면 String(A) -> "a,b"가 되지만 JSON.stringify(A) -> "[\"a\",\"b\"]"가 됨.
+JSON.stringify()로 만든 문자열을 살려서 원래 객체로 되돌릴 수 있음. 그게 바로 JSON.parse()
+JSON.parse("[\"a\",\"b\"]") 의 결과는 ["a", "b"] 즉 A가 됨.
+
+
+array가 가지고 있는 기본적인 메소드 
+.forEach(함수명) -> 배열의 원소를 하나씩 돌면서 해당 함수를 실행. 그리고 해당 함수에 첫번째 매개변수를 기본적으로
+해당 배열의 원소를 받을 수 있음 (매개변수 명시하지 않아도 전달함) (event handle함수에서 event받는 것처럼) 관습적으로 해당 매개변수는 item 으로 명명함.
+
 
 마찬가지로 variable도 존재.
 
@@ -91,6 +102,14 @@ javascript는 HTML에 접근하고, css도 HTML에 접근해서 스타일을 달
 
 javascript에서 태그의 class변경시 className으로 가져오는 것과 classList로 가져오는 두가지 방법이 존재.
 
+
+javascript가 HTML의 element를 create할 수 있음. 
+document.createElement()메소드를 통해. 태그를 만들고 그 태그를 document.body.appendChild()등으로 HTML의 body에 추가할 수 있음.
+(실제로 .html문서가 바뀌는건 아님. appendChild는 맨 뒤에 추가. prependChild는 맨 앞에 추가.)
+(어쨋든 css로 styling하기 때문에 앞에 넣든 뒤에 넣든 크게 중요한 것은 아님.)
+
+
+
 javascript는 Event를 listen할 수 있음.
 객체.addEventListener("add할 이벤트 ex)click", 이벤트가 호출할 함수이름)
 해당 객체에서 해당 이벤트가 발생하면 해당 함수를 호출하여 실행함. 함수이름에()를 같이 쓰지 않도록 주의.
@@ -99,7 +118,7 @@ javascript는 Event를 listen할 수 있음.
 함수이름() 이렇게 전달하면 해당 함수가 이벤트 발생과 상관없이 javascript의 해당 라인을 읽을때 실행되어 버림.
 그리고 해당 함수를 호출할때 기본적으로 매개변수를 하나 전달받을 수 있다(첫번째 매개변수). 해당 매개변수에는 event발생과 관련된 정보들이 들어있음. 
 그래서 호출하는 함수에서 해당 정보들을 다루는 기능을 작성할 수 있도록 함. 보통 매개변수명으로 event를 사용.
-(좀 더 정확히는 event객체를 전달하고 그 객체에는 여러 정보가 들어있다.)
+(좀 더 정확히는 event객체를 전달하고 그 객체에는 여러 정보가 들어있다. 예를들어 event.target으로 event가 발생한 객체를 찾을 수 있음)
 해당 함수에서 event.preventDefault(); 를 호출하면 event가 발생했을때 브라우저가 기본적으로 하는 행동들을 막을 수 있음.
 예를 들어 submit이벤트 발생시, addEventListener로 더해진 함수를 호출 한 뒤에 새로고침이 기본적으로 이루어 지는데 저 함수를 호출하게 하면 새로고침을 하지 않음.
 즉 evetListener가 호출한 함수가 끝나면, 브라우저의 해당 event에 대한 기본행동이 실행되므로, 
@@ -151,6 +170,31 @@ classList.toggle("해당클래스이름")   -> 해당 클래스가 list내에 �
 localStorage.setItem("저장할 값의 이름", 저장할값)   -> key 와 value
 localStorage.getItem("찾아올 값의 이름")      해당 이름으로 값이 없을경우 null을 반환.
 localStorage.removeItem("지우고 싶은 값의 이름")
+localStorage는 문자열, 텍스트만 저장 가능. 다른걸 저장하려고 하면 저절로 텍스트로 변환해서 저장할 것.
 
 
-  
+setInterval() : 특정 시간간격으로 함수를 자동으로 실행함. 2개의 매개변수를 받음. 기본내장함수(객체의 메소드는 아닌듯)
+첫번째는 실행하려는 함수의 이름, 두번째는 시간 간격(ms, 1000ms = 1s)
+
+setTimeout() : javascript가 코드를 읽자마자 실행되지 않고 특정 시점 이후에 실행되도록 설정가능. 마찬가지로 2개의 매개변수.
+첫번째는 실행하려는 함수의 이름, 두번째는 얼마간의 시간후에 실행할지(ms). delay후에 한번만 실행되는 것.
+
+
+시간, 시계 clock 과 관련해서 javascript에서는 유용한 클래스가 이미 존재. Date클래스.
+const date = new Date(); 형태로 객체 생성해서 여러가지 유용한 메소드 사용 가능. 
+생성된 시점의 날짜, 시간 정보를 담고 있는 객체 ( 새로운 시간을 얻기 위해서는 새로운 date객체 생성 필요 )
+
+
+문자열 포맷팅과 관련되어서 문자열, string에 몇몇 메소드 존재.
+문자열.padStart(몇자리의 문자로 만들것인지, 빈자리를 무엇으로 채울것인지)  -> 빈 자리는 앞에 만들어서 채움. 
+(앞에서 부터 몇자리가 될 때까지 padding을 넣는다고 생각)
+문자열.padEnd() -> 뒤에다가 padding을 넣음.
+
+
+기본적으로 존재하는 Math모듈.
+Math.random() -> 0에서 1사이 무작위 실수를 반환
+Math.round() -> 반올림 값을 반환  /  Math.ceil() -> 올림 / Math.floor() -> 내림
+
+
+화살표 함수 (함수를 미리 정의해놓고 사용하는 것이 아니라 함수의 호출이 되는 부분에서 함수를 정의하여 사용)
+(매개변수) => 기능;  형태로 사용
